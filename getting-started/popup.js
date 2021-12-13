@@ -1,55 +1,50 @@
-// Initialize butotn with users's prefered color
-let changeColor = document.getElementById("changeColor");
-// let encrypted = true;
-chrome.storage.sync.set({encrypted : true});
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
-});
+// Initialize button
+let encryptButton = document.getElementById("encrypt");
 
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
+//Add global variable to storage
+chrome.storage.sync.set({ encrypted: true });
+
+// When the button is clicked, inject encryption into current page
+encryptButton.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: setPageBackgroundColor,
+    function: encrypt,
   });
 });
 
-
-// function decrypt(str) {
-//   let newStr = "";
-//   for (let i = 0; i < str.length; i++) {
-//     newStr = newStr + (str.charAt(i) + 2);
-//   }
-//   return newStr;
-// }
-
-
 // The body of this function will be execuetd as a content script inside the
 // current page
-function setPageBackgroundColor() {
-  let table = document.getElementById("dataTable");
-  let newTable = table;
-  chrome.storage.sync.get(['encrypted'],({encrypted}) =>{
-    
-    for (let i = 1; i < table.rows.length; i++) {
-      for (let j = 0; j < table.rows[i].length; j++) {
-      newTable.rows[i].cells[j].innerHTML = decryptEncrypt(table.rows[i].cells[j].innerHTML,encrypted);
+//Get the data table , decrypt/encrypt the table and override the old data table.
+function encrypt() {
+  let currTable = document.getElementById("dataTable");
+  if (currTable == null) {
+    alert("This extension is for Dor&Po agency use only !");
+  } 
+  else {
+  let newTable = currTable;
+  let decryptEncrypt = (str, encrypted) => {
+    let newStr = "";
+    for (let i = 0; i < str.length; i++) {
+      newChar = encrypted
+        ? String.fromCharCode(str.charCodeAt(i) + 2)
+        : String.fromCharCode(str.charCodeAt(i) - 2);
+      newStr += newChar;
+      }
+    return newStr;
+  } 
+  chrome.storage.sync.get(["encrypted"], ({ encrypted }) => {
+    for (let i = 1; i < newTable.rows.length; i++) {
+      for (let j = 0; j < newTable.rows[i].cells.length; j++) {
+        newTable.rows[i].cells[j].innerHTML = decryptEncrypt(
+          newTable.rows[i].cells[j].innerHTML,
+          encrypted
+        );
       }
     }
-    
-    // chrome.storage.sync.set({encrypted: !encrypted});
+  chrome.storage.sync.set({ encrypted: !encrypted });
   });
-  console.log(newTable);
-  table.replaceWith(newTable);
-}
-
-
-function decryptEncrypt(str,encrypted) {
-  let newStr = "";
-  for (let i = 0; i < str.length; i++) {
-    newStr += encrypted ? (str.charAt(i) + 2) : ((str.charAt(i) - 2));
+  currTable.replaceWith(newTable);
   }
-  return newStr;
 }
