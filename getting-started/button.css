@@ -1,7 +1,6 @@
 button {
-  background-image: url(./images/icon.jpeg);
-  height: 112px;
-  width: 200px;
+  
+  background-color: #4CAF50; /* Green */
   outline: none;
   margin: 10px;
   border: none;
@@ -9,10 +8,28 @@ button {
   
 }
 
-.button :hover {
+.encryptButton {
+  background-image: url(./images/icon.jpeg);
+  height: 112px;
+  width: 200px;
+}
+
+.submitButton {  
+    
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;  
+} 
+:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-button.current {
-  box-shadow: 0 0 0 2px white, 0 0 0 4px black;
-}
+
