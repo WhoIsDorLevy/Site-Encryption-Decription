@@ -10,21 +10,32 @@ chrome.storage.sync.set({ encryptionKey: 0 });
 
 //when the "submit key" button is clicked, set the encryption key to the input
 submitButton.addEventListener("click", async () => {
+  // let careful = new Audio(chrome.runtime.getURL("Careful.mp3"));
+  // careful.play();
+  
   let textBox = document.getElementById("keyInput");
   let keyInput = textBox.value;
   let keyInteger = parseInt(keyInput);
   textBox.value = '';
   if (isNaN(keyInteger)){
-    alert("Please provide a valid number")
+    let fail = new Audio(chrome.runtime.getURL("fail.mp3"));
+    fail.onplaying = function () {alert("Please provide a valid number")}
+    fail.play();
+    
   }
   else {
     chrome.storage.sync.set({ encryptionKey: keyInteger })
-    alert("Key submitted successfully")
+    let marioCoin = new Audio(chrome.runtime.getURL("marioCoin.mp3"));
+    marioCoin.play();
   }
 } )
 
 // When the encryption button is clicked, inject encryption key into current page
 encryptButton.addEventListener("click", async () => {
+  // let redCar = new Audio(chrome.runtime.getURL("redCar.mp3"));
+  // redCar.play();
+  let doorOpen = new Audio(chrome.runtime.getURL("doorOpen.mp3"));
+  doorOpen.play();
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   chrome.scripting.executeScript({
