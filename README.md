@@ -1,13 +1,13 @@
 # Site-Encryption-Decription
 
 # Installation
-In order to install the chrome extenstion, use 'git clone' to this project repo.
-After that, go to chrome extenstions page (chrome://extensions/) and enable 'Developer Mode'. 
-Now press on 'load unpacked' button and choose 'Encryptor/Decryptor' folder of the cloned repo.
+In order to install the chrome extenstion, use 'git clone' to this project repo. <br />
+After that, go to chrome extenstions page (chrome://extensions/) and enable 'Developer Mode'.  <br />
+Now press on 'load unpacked' button and choose 'Encryptor/Decryptor' folder of the cloned repo. <br />
 
 # How To Use
-Enter the Dor&Po Website.
-Click on the extenstion button.
-Enter the secret key (which is set to 2 for this site)
-Then press submit key
-And finally press on the Dor&Po logo - Viola ! You've just decrypted the data !
+Enter the Dor&Po Website.  <br />
+Click on the extenstion button. <br />
+Enter the secret key (which is set to 2 for this site) <br />
+Then press submit key <br />
+And finally press on the Dor&Po logo - Viola ! You've just decrypted the data ! <br />
