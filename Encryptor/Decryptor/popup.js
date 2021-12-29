@@ -8,11 +8,8 @@ chrome.storage.sync.set({ encryptionKey: 0 });
 
 //add on click listeners to the buttons
 
-//when the "submit key" button is clicked, set the encryption key to the input
+// When the "submit key" button is clicked, set the encryption key to the input
 submitButton.addEventListener("click", async () => {
-  // let careful = new Audio(chrome.runtime.getURL("Careful.mp3"));
-  // careful.play();
-  
   let textBox = document.getElementById("keyInput");
   let keyInput = textBox.value;
   let keyInteger = parseInt(keyInput);
@@ -32,8 +29,6 @@ submitButton.addEventListener("click", async () => {
 
 // When the encryption button is clicked, inject encryption key into current page
 encryptButton.addEventListener("click", async () => {
-  // let redCar = new Audio(chrome.runtime.getURL("redCar.mp3"));
-  // redCar.play();
   let doorOpen = new Audio(chrome.runtime.getURL("doorOpen.mp3"));
   doorOpen.play();
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -44,16 +39,21 @@ encryptButton.addEventListener("click", async () => {
   });
 });
 
-// The body of this function will be execuetd as a content script inside the
-// current page
-//Get the data table , decrypt/encrypt the table and override the old data table.
+// The body of this function will be execuetd when the user clicks on the button
+// The fuction gets the data table , decrypts/encrypts the table and replaces the old data table.
 function encrypt() {
-  let currTable = document.getElementById("dataTable");
+  let currTable = document.getElementById("Dor&PoTable");
   if (currTable == null) {
     alert("This extension is for Dor&Po agency use only!");
   } 
   else {
   let newTable = currTable;
+
+  //Defining the encryption/decryption function
+  //the function receives three parameters:
+  //str - the string to encrypt/decrypt
+  //encrypted - boolean param which defines if the string is already encrypted
+  //encryptionKey - encryption key set by the user
   let decryptEncrypt = (str, encrypted, encryptionKey) => {
     let newStr = "";
     for (let i = 0; i < str.length; i++) {
@@ -64,8 +64,9 @@ function encrypt() {
       }
     return newStr;
   } 
+  // Get from the global storage the parameters required for the function described above
   chrome.storage.sync.get(["encrypted", "encryptionKey"], ( res ) => {
-    for (let i = 1; i < newTable.rows.length; i++) {
+    for (let i = 0; i < newTable.rows.length; i++) {
       for (let j = 0; j < newTable.rows[i].cells.length; j++) {
         newTable.rows[i].cells[j].innerHTML = decryptEncrypt(
           newTable.rows[i].cells[j].innerHTML,
@@ -74,6 +75,7 @@ function encrypt() {
         );
       }
     }
+  // Set the new status of encrypted var
   chrome.storage.sync.set({ encrypted: !res.encrypted });
   });
   currTable.replaceWith(newTable);
